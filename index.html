@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes"/>
+  <meta name="theme-color" content="#3D1A78"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="description" content="Gabriella Style Haven — Curated fashion for the modern African woman"/>
+  <title>GSH — Gabriella Style Haven</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+
+  <!-- App Stylesheet -->
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+
+  <!-- ===== TOAST NOTIFICATION ===== -->
+  <div id="toast" class="toast">
+    <span id="t-ic"></span>
+    <span id="t-msg"></span>
+  </div>
+
+  <!-- ===== TOPBAR ===== -->
+  <div class="topbar" id="topbar">
+    <div class="t-logo" onclick="goPage('home')">✦ <em>GSH</em></div>
+    <div class="t-nav-desktop" id="nav-desktop"></div>
+    <button class="t-menu-btn" onclick="openDrawer()" aria-label="Open menu">☰</button>
+  </div>
+
+  <!-- ===== MOBILE DRAWER ===== -->
+  <div class="mob-drawer" id="mob-drawer">
+    <div class="mob-backdrop" onclick="closeDrawer()"></div>
+    <div class="mob-panel">
+      <div class="mob-panel-head">
+        <div class="mob-panel-logo">✦ <em>GSH</em></div>
+        <button class="mob-close" onclick="closeDrawer()" aria-label="Close menu">✕</button>
+      </div>
+      <div class="mob-nav" id="mob-nav"></div>
+    </div>
+  </div>
+
+  <!-- ===================================================
+       LANDING — Portal chooser
+       =================================================== -->
+  <div id="page-landing" style="display:flex;">
+    <div class="land-orb land-orb-1"></div>
+    <div class="land-orb land-orb-2"></div>
+    <div class="land-box">
+      <h1 class="land-title">✦ <em>Gabriella</em><br>Style Haven</h1>
+      <p class="land-sub">Who are you?</p>
+      <div class="land-cards">
+        <div class="land-card" onclick="showAuth('customer')">
+          <span class="land-card-icon">🛍️</span>
+          <div class="land-card-title">Customer</div>
+          <div class="land-card-sub">Browse &amp; shop our curated collection</div>
+        </div>
+        <div class="land-card" onclick="showAuth('admin')">
+          <span class="land-card-icon">⚙️</span>
+          <div class="land-card-title">Admin</div>
+          <div class="land-card-sub">Manage products, orders &amp; inventory</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================
+       ADMIN AUTH
+       =================================================== -->
+  <div id="page-auth-admin" style="display:none;" class="auth-shell auth-shell-admin">
+    <div class="auth-orb" style="
+      width:400px;height:400px;
+      background:radial-gradient(circle,rgba(122,76,192,.3) 0,transparent 65%);
+      top:-120px;right:-100px;position:absolute;pointer-events:none;"></div>
+    <div class="auth-box">
+      <button class="auth-back" onclick="showLanding()">← Back</button>
+      <div class="auth-icon auth-icon-admin" style="font-size:24px;">⚙️</div>
+      <h2 class="auth-title">Admin Login</h2>
+      <p class="auth-badge">Gabriella Style Haven — Control Panel</p>
+
+      <div class="fg">
+        <label>Admin Email</label>
+        <input id="a-em" type="email" placeholder="admin@gabriella.com" autocomplete="email"/>
+      </div>
+      <div class="fg">
+        <label>Password</label>
+        <input id="a-pw" type="password" placeholder="••••••••" autocomplete="current-password"/>
+      </div>
+      <button class="btn btn-pu" style="width:100%;margin-top:4px;" onclick="doAdminLogin()">
+        Access Dashboard →
+      </button>
+
+      <div style="margin-top:16px;padding:12px;background:var(--p50);border-radius:9px;font-size:12px;color:var(--muted);text-align:center;">
+        First-time setup? Register your admin account below.<br>
+        <button onclick="toggleAdminReg()"
+          style="background:none;border:none;color:var(--p600);font-size:12px;cursor:pointer;font-weight:600;margin-top:4px;text-decoration:underline;">
+          Register Admin Account
+        </button>
+      </div>
+
+      <div id="admin-reg" style="display:none;margin-top:14px;border-top:1px solid var(--border);padding-top:14px;">
+        <div class="g2">
+          <div class="fg"><label>First Name</label><input id="ar-fn" placeholder="Jane"/></div>
+          <div class="fg"><label>Last Name</label><input id="ar-ln" placeholder="Doe"/></div>
+        </div>
+        <div class="fg">
+          <label>Email *</label>
+          <input id="ar-em" type="email" placeholder="admin@gabriella.com"/>
+        </div>
+        <div class="fg">
+          <label>Password *</label>
+          <input id="ar-pw" type="password" placeholder="Strong password"/>
+        </div>
+        <button class="btn btn-outline" style="width:100%;" onclick="doAdminRegister()">
+          Create Admin Account
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================
+       CUSTOMER AUTH
+       =================================================== -->
+  <div id="page-auth-customer" style="display:none;" class="auth-shell auth-shell-customer">
+    <div class="auth-orb" style="
+      width:350px;height:350px;
+      background:radial-gradient(circle,rgba(255,255,255,.12) 0,transparent 65%);
+      top:-100px;right:-80px;position:absolute;pointer-events:none;"></div>
+    <div class="auth-box">
+      <button class="auth-back" onclick="showLanding()">← Back</button>
+      <div class="auth-icon auth-icon-cust">🛍️</div>
+      <h2 class="auth-title">Welcome</h2>
+      <p class="auth-badge">Sign in or create an account</p>
+
+      <div class="auth-tab">
+        <button class="auth-tab-btn on" id="ct-in" onclick="custTab('in')">Sign In</button>
+        <button class="auth-tab-btn" id="ct-up" onclick="custTab('up')">Register</button>
+      </div>
+
+      <!-- Sign In Form -->
+      <div id="cust-in">
+        <div class="fg">
+          <label>Email</label>
+          <input id="c-em" type="email" placeholder="your@email.com" autocomplete="email"/>
+        </div>
+        <div class="fg">
+          <label>Password</label>
+          <input id="c-pw" type="password" placeholder="••••••••" autocomplete="current-password"/>
+        </div>
+        <button class="btn btn-pu" style="width:100%;margin-top:4px;" onclick="doCustLogin()">
+          Sign In →
+        </button>
+      </div>
+
+      <!-- Register Form -->
+      <div id="cust-up" style="display:none;">
+        <div class="g2">
+          <div class="fg">
+            <label>First Name</label>
+            <input id="cr-fn" placeholder="Jane" autocomplete="given-name"/>
+          </div>
+          <div class="fg">
+            <label>Last Name</label>
+            <input id="cr-ln" placeholder="Doe" autocomplete="family-name"/>
+          </div>
+        </div>
+        <div class="fg">
+          <label>Email *</label>
+          <input id="cr-em" type="email" placeholder="your@email.com" autocomplete="email"/>
+        </div>
+        <div class="fg">
+          <label>Phone — for SMS receipts</label>
+          <input id="cr-ph" type="tel" placeholder="+233 24 000 0000" autocomplete="tel"/>
+        </div>
+        <div class="fg">
+          <label>Password *</label>
+          <input id="cr-pw" type="password" placeholder="At least 6 characters" autocomplete="new-password"/>
+        </div>
+        <button class="btn btn-pu" style="width:100%;margin-top:4px;" onclick="doCustRegister()">
+          Create Account →
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================
+       HOME PAGE
+       =================================================== -->
+  <div class="page" id="page-home">
+    <div class="hero">
+      <div class="hero-bg"></div>
+      <div class="hero-orb hero-orb1"></div>
+      <div class="hero-orb hero-orb2"></div>
+      <div class="hero-inner">
+        <div class="hero-eye">2025 Collection · New Arrivals</div>
+        <h1 class="hero-h">Dress Like<br><em>Gabriella.</em></h1>
+        <p class="hero-p">Curated fashion &amp; accessories crafted for the modern African woman.</p>
+        <div class="hero-btns">
+          <button class="btn btn-white btn-lg" onclick="goPage('shop')">Shop Now</button>
+          <button class="btn btn-outline"
+            style="border-color:rgba(255,255,255,.4);color:#fff;background:transparent;"
+            onclick="goPage('shop')">New Arrivals</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="sec-h">Shop by Category</div>
+      <div class="sec-sub">Explore our curated collections</div>
+      <div class="cat-grid" id="home-cats"></div>
+    </div>
+
+    <div class="section" style="background:var(--p50);">
+      <div class="sec-h">Featured This Season</div>
+      <div class="sec-sub">Hand-picked for you</div>
+      <div class="pg" style="padding:0;" id="home-feat"></div>
+    </div>
+  </div>
+
+  <!-- ===================================================
+       SHOP PAGE
+       =================================================== -->
+  <div class="page" id="page-shop">
+    <div class="search-bar">
+      <div class="sw">
+        <span class="sw-icon">🔍</span>
+        <input id="sq" type="search" placeholder="Search products…" oninput="renderShop()"/>
+      </div>
+      <button class="btn btn-pu btn-sm" onclick="renderShop()">Go</button>
+    </div>
+    <div class="filter-scroll" id="filter-row"></div>
+    <div class="pg" id="shop-grid"></div>
+  </div>
+
+  <!-- ===================================================
+       CART PAGE
+       =================================================== -->
+  <div class="page" id="page-cart">
+    <div class="cart-wrap">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
+        <h2 style="font-family:var(--font-d);font-size:24px;font-weight:700;color:var(--p800);">Cart</h2>
+        <span id="cart-lbl" class="tag tg-pu"></span>
+      </div>
+      <div id="cart-items"></div>
+      <div id="cart-foot"></div>
+    </div>
+  </div>
+
+  <!-- ===================================================
+       CHECKOUT PAGE
+       =================================================== -->
+  <div class="page" id="page-checkout">
+    <div class="co-wrap">
+
+      <!-- Left column: shipping + payment -->
+      <div>
+        <h2 style="font-family:var(--font-d);font-size:22px;font-weight:700;color:var(--p800);margin-bottom:18px;">
+          Checkout
+        </h2>
+
+        <!-- Shipping Details -->
+        <div style="background:var(--white);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:14px;">
+          <div style="font-size:13px;font-weight:600;margin-bottom:14px;color:var(--p700);">📍 Shipping Details</div>
+          <div class="g2">
+            <div class="fg"><label>First Name</label><input id="co-fn" placeholder="Jane" autocomplete="given-name"/></div>
+            <div class="fg"><label>Last Name</label><input id="co-ln" placeholder="Doe" autocomplete="family-name"/></div>
+          </div>
+          <div class="fg">
+            <label>Email — receipt sent here</label>
+            <input id="co-em" type="email" placeholder="jane@email.com" autocomplete="email"/>
+          </div>
+          <div class="fg">
+            <label>Phone — SMS receipt</label>
+            <input id="co-ph" type="tel" placeholder="+233 24 000 0000" autocomplete="tel"/>
+          </div>
+          <div class="fg">
+            <label>Street Address</label>
+            <input id="co-addr" placeholder="123 Oxford St, Accra" autocomplete="street-address"/>
+          </div>
+          <div class="g2">
+            <div class="fg"><label>City</label><input id="co-city" placeholder="Accra" autocomplete="address-level2"/></div>
+            <div class="fg"><label>Region</label><input id="co-region" placeholder="Greater Accra" autocomplete="address-level1"/></div>
+          </div>
+        </div>
+
+        <!-- Payment Method -->
+        <div style="background:var(--white);border:1px solid var(--border);border-radius:14px;padding:18px;">
+          <div style="font-size:13px;font-weight:600;margin-bottom:14px;color:var(--p700);">💳 Payment Method</div>
+          <div class="pay-opts">
+            <div class="po on" id="po-card" onclick="selPay('card')">
+              <div class="po-icon">💳</div><div class="po-lbl">Card</div>
+            </div>
+            <div class="po" id="po-momo" onclick="selPay('momo')">
+              <div class="po-icon">📱</div><div class="po-lbl">MoMo</div>
+            </div>
+            <div class="po" id="po-bank" onclick="selPay('bank')">
+              <div class="po-icon">🏦</div><div class="po-lbl">Bank</div>
+            </div>
+            <div class="po" id="po-cod" onclick="selPay('cod')">
+              <div class="po-icon">🚚</div><div class="po-lbl">COD</div>
+            </div>
+          </div>
+          <div id="pay-fields"></div>
+          <button class="btn btn-pu btn-lg" style="width:100%;margin-top:14px;" onclick="placeOrder()">
+            Place Order →
+          </button>
+        </div>
+      </div>
+
+      <!-- Right column: order summary -->
+      <div>
+        <div style="background:var(--white);border:1px solid var(--border);border-radius:14px;padding:18px;
+          position:sticky;top:calc(var(--nav-h) + 12px);">
+          <div style="font-size:13px;font-weight:600;margin-bottom:14px;color:var(--p700);">🛍️ Order Summary</div>
+          <div id="co-sum"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===================================================
+       ORDERS PAGE
+       =================================================== -->
+  <div class="page" id="page-orders">
+    <div style="max-width:780px;margin:0 auto;padding:24px 16px;width:100%;">
+      <h2 style="font-family:var(--font-d);font-size:24px;font-weight:700;color:var(--p800);margin-bottom:20px;">
+        My Orders
+      </h2>
+      <div id="orders-list"></div>
+    </div>
+  </div>
+
+  <!-- ===================================================
+       ADMIN PAGE
+       =================================================== -->
+  <div class="page" id="page-admin">
+    <div class="admin-wrap">
+      <div class="admin-side">
+        <div class="aside-h">Admin</div>
+        <button class="asb on" id="as-dash"   onclick="aSection('dash')"  ><span>📊</span> Dashboard</button>
+        <button class="asb"    id="as-prods"  onclick="aSection('prods')" ><span>👗</span> Products</button>
+        <button class="asb"    id="as-inv"    onclick="aSection('inv')"   ><span>📦</span> Inventory</button>
+        <button class="asb"    id="as-orders" onclick="aSection('orders')"><span>🛍️</span> Orders</button>
+        <button class="asb"    id="as-cust"   onclick="aSection('cust')"  ><span>👥</span> Customers</button>
+        <button class="asb"    id="as-add"    onclick="aSection('add')"   ><span>➕</span> Add Product</button>
+      </div>
+      <div class="admin-main" id="admin-main"></div>
+    </div>
+  </div>
+
+  <!-- ===================================================
+       MODALS
+       =================================================== -->
+
+  <!-- Product Detail Modal -->
+  <div class="overlay" id="mod-prod">
+    <div class="modal" style="max-width:480px;">
+      <button class="modal-x" onclick="closeM('mod-prod')" aria-label="Close">✕</button>
+      <div id="mod-prod-body"></div>
+    </div>
+  </div>
+
+  <!-- MoMo Payment Modal -->
+  <div class="overlay" id="mod-pay">
+    <div class="modal" style="max-width:400px;">
+      <button class="modal-x" onclick="closeM('mod-pay')" aria-label="Close">✕</button>
+      <div id="mod-pay-body"></div>
+    </div>
+  </div>
+
+  <!-- Order Success / Receipt Modal -->
+  <div class="overlay" id="mod-ok">
+    <div class="modal" style="text-align:center;max-width:440px;">
+      <div class="check-circle">
+        <svg class="check-svg" viewBox="0 0 36 36" aria-hidden="true">
+          <path class="check-path" d="M6 18l8 8L30 10"/>
+        </svg>
+      </div>
+      <h2 style="font-family:var(--font-d);font-size:22px;font-weight:700;margin-bottom:6px;color:var(--p800);">
+        Order Confirmed!
+      </h2>
+      <p style="color:var(--muted);font-size:13px;margin-bottom:18px;" id="receipt-sent"></p>
+      <div id="receipt-box"></div>
+      <div style="display:flex;gap:10px;margin-top:18px;justify-content:center;flex-wrap:wrap;">
+        <button class="btn btn-pu btn-sm" onclick="closeM('mod-ok');goPage('orders')">View Orders</button>
+        <button class="btn btn-outline btn-sm" onclick="closeM('mod-ok');goPage('shop')">Continue Shopping</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Product Modal -->
+  <div class="overlay" id="mod-edit">
+    <div class="modal">
+      <button class="modal-x" onclick="closeM('mod-edit')" aria-label="Close">✕</button>
+      <div id="mod-edit-body"></div>
+    </div>
+  </div>
+
+  <!-- ===== App JavaScript ===== -->
+  <script src="app.js"></script>
+
+</body>
+</html>
